@@ -1,0 +1,20 @@
+/* 
+    rem html 속성의 글자 크기 단위
+    em 부모 속성의 글자 크기 단위
+    vw, vh 가변 글자 크기
+
+*/
+
+p{
+    color:red;
+    line-height: 1.5;
+} 
+
+h1{
+    color:green;
+    font-size:40px;
+    /* 1번이 없으면 times를 적용, times도 없으면 generic family (텍스트의 글꼴 유형) */
+    font-family:'Times New Roman', Times, serif;
+
+    font-weight: bold;
+}
