@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+
+    </head>
+
+    <body>
+
+        <script>
+            // 비구조화 할당
+            // 기존 배열과 객체에서의 값을 추출하는 방법
+
+            // 문자열 배열 선언 및 초기화
+            const books = ['React','Vue','Angualr','Svelt','Jquery'];
+            // 구조화된 배열 값을 추출해 변수에 할당하는 전통적 방식
+            let book1 = books[0];
+            let book2 = books[1];
+            let book3 = books[2];
+            console.log("배열에서 추출한 값: ",book1, book2, book3);
+
+            // 비구조화 할당 방식
+            const [book4, book5] = ['Java','C#','Python','PHP','JaveScript'];
+            console.log("비구조화 할당 방식의 상수 출력: ", book4, book5);
+
+            // 비구조화 할당, 나머지는 배열로
+            const [book6, ...extrabooks] = ['Java','C#','Python','PHP','JaveScript'];
+            console.log("비구조화 할당 방식의 상수 출력: ", book6, extrabooks);
+
+            // 비구조화 할당 예시
+            const [book7, book8, book9, book10, book11, book12 = "DB"] = ['Java','C#','Python','PHP','JaveScript'];
+            console.log("비구조화 할당 방식의 상수 출력: ", book7, book8, book9, book10, book11);
+
+            // rdbms 관계형 데이터베이스
+            // 데이터가 많아지면 조회 속도가 느려진다.
+            // 데이터 참조 무결성(결함이 없는 데이터)을 가장 확실하게 지원해준다.
+            // constrait (제약조건)을 설정하여 이상한 데이터를 받지 않는다. 데이터 일관성 유지
+
+            // noSQL
+            // 처리 속도에 포커스가 맞춰져 있다. (빅데이터 처리)
+
+            const techTrend = {
+                front:'React.js',
+                backend:'Node.js',
+                server:'Linux',
+                rdbms:'MySQL=MariaDB',
+                noSQL:'MongoDB',
+                infra:'AWS',
+                getAuther:function(){
+                    return "강창훈";
+                }
+            }
+
+            // 전통적 방식
+            let frontTech = techTrend.front;
+            let backTech = techTrend.backend;
+            var serverTech = techTrend.server;
+            console.log("구조화된 방식으로 추출한 객체의 속성 변수 값", frontTech, backTech, serverTech);
+
+            // 비구조화 방식 
+            const {front, backend, server, getAuther} = {
+                front:'React.js',
+                backend:'Node.js',
+                server:'Linux',
+                rdbms:'MySQL=MariaDB',
+                noSQL:'MongoDB',
+                infra:'AWS',
+                getAuther:function(){
+                    return "강창훈";
+                }
+            }
+            console.log("비구조화 할당 방식으로 추출한 객체의 속성 변수 값", front, backend, server, getAuther);
+            
+            // 비구조화 할당 문법 사용 이유
+            // 코딩 time 효율 증대
+
+        </script>
+    </body>
+</html>

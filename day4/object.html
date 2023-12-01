@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>자바스크립트 객체 정의/사용하기</title>
+    </head>
+
+    <body>
+        <h1>자바스크립트 객체 정의/사용하기</h1>
+
+        <script>
+            var name = "Lee";
+            var age = 27;
+            
+            var user ={
+                name,
+                age:age,
+                address:"인천광역시",
+                telephone:"010-1111-1111",
+                teach:function(){
+                    return "teaching node.js"
+                }
+            };
+
+            let laptop = {
+                product:"1",
+                productName:"ASUS TUF",
+                price:1800,
+                brand:"ASUS"
+            };
+
+            console.log("사용자 자바스크립트 객체 출력", user);
+
+            console.log("Before: ", laptop);
+            laptop.price = 2000;
+            console.log("After: ",laptop)
+
+            //객체의 동적 속성 생성 기능
+            // 노트북의 재고량 속성을 동적성성정의 방식으로 신규 속성 추가
+            laptop["stock"] = 200;
+            console.log("Stock added", laptop);
+
+            var ASCenter = "GangNam";
+            laptop[ASCenter+"-역삼지점"] = 500;
+            console.log("ASCenter Added: ", laptop);
+        </script>
+    </body>
+</html>

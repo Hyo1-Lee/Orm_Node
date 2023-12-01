@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ECMAscript2015-템플릿 문자열 실습</title>
+    </head>
+
+    <body>
+        <h1>ECMAscript2015-템프릿 문자열 실습</h1>
+
+        <script>
+            const name = "Lee";
+            const age = 40;
+            let local = "인천광역시";
+            
+            // 기존 방식의 문장열과 변수값의 조합
+            // 가독성이 떨어짐
+            let introduction = "저를 소개합니다. 이름은"+name+"이고 나이는 "+age+"살이고 사는 곳은 "+local+"입니다.";
+            console.log("전통적인 문자열과 변수의 조합: ", introduction);
+
+            // ECMAscript 2015에서 추가된 신규 문법 템플릿 문자열 방식
+            // 백틱 문자열 (역홑따옴표)
+            let introduction2 = `저를 소개합니다. 이름은${name}이고 나이는 ${age}살이고 사는 곳은 ${local}입니다.`
+            console.log("템플릿 문자열을 통한 문자열과 변수의 조합: ", introduction2);
+
+        </script>
+    </body>
+</html>

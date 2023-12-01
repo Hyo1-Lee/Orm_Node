@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title></title>
+    </head>
+
+    <body>
+        <h1>최신 함수 정의 사용법</h1>
+
+        <script>
+            // 함수 사용 목적: 코드의 재사용성 제공
+            // case 1: 전통적인 js 함수 정의 방식
+            function fnPlus(a,b){
+                let c = a+b;
+                return c;
+            }
+
+            var result = fnPlus(1,2);
+            console.log("전통적인 함수 기능 정의 방식: ", result);
+
+            // case 2: 익명 함수 - 함수명 없이 정의
+            var plus1 = function(a,b){
+                return a+b;
+            }
+            var result1 = plus1(1,5);
+            console.log("익명 함수 기능 정의 방식", result1);
+
+            // case 3: 화살표 함수
+            var plus2 = (a,b)=>{
+                return a+b;
+            }
+            console.log("화살표 함수 기능 정의 방식", plus2(10,20));
+
+            // case 4: 화살표 함수 without return
+            let plus3 = (a,b)=>(a+b);
+            console.log("화살표 함수 기능 정의 방식2", plus3(110,20));
+
+        </script>
+    </body>
+</html>
