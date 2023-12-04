@@ -4,17 +4,8 @@
  * Module dependencies.
  */
 
-// 개발용 Node Express 프로젝트의 최초 시작 모듈
-// 주로 개발환경에서의 노드 백엔드 앱을 서비스하기 위한 로컬 웹서버 환경을 구성해주고
-// 노드 백엔드 앱 서비스 서버 환경을 제공한다.
-
-// 웹 서버를 통해 실제 
 var app = require('../app');
-
-// 각종 백엔드 디버깅 환경 제공을 위한 debug 객체 참조
-var debug = require('debug')('express-nodesample1:server');
-
-// 노트 프레임워크 내에서 기본 제공되는 http 웹서버 패키지를 참조
+var debug = require('debug')('myfirstnodeapp-lee:server');
 var http = require('http');
 
 /**
@@ -27,7 +18,7 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-// 웹 서버 객체 생성
+
 var server = http.createServer(app);
 
 /**
