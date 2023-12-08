@@ -187,7 +187,6 @@ fetchUserData(123)
 - The second then logs the processed data.
 - If any error occurs during these operations, the catch block will log the error.
 
-
 ## 8. Classes
 - Syntactic sugar over JavaScript's existing prototype-based inheritance.
 - Provides a clearer and more concise way to create objects and deal with inheritance.
