@@ -23,6 +23,10 @@
     "기본링크주소?key=value&key=value&key=value"
 
 2. 파라미터 방식으로 URL 주소 안에다 직접 데이터를 넣어서 주소 체계를 만들어 데이터를 전달하는 방식
+    - 검색 엔진 최적화에 매우 중요
+    
     "http://shop.naver.com/product/10000"
+    
     "http://shop.naver.com/category/100/product/10000"
+    
     "http://shop.naver.com/blogs/1"
