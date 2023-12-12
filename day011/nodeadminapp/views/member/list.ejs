@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Member List</title>
+    <link rel="stylesheet" href="/styles/member.css" />
+</head>
+<body>
+    <div class="header">
+        <a href="/"><img src="/images/home.png" alt="Home" class="home-icon"></a>
+
+        <h1>Member List</h1>
+        <a href="/member/create" class="button">Create New Member</a>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+            <% members.forEach(function(member) { %>
+                <tr>
+                    <td><%= member.id %></td>
+                    <td><%= member.username %></td>
+                    <td><%= member.email %></td>
+                    <td>
+                        <a href="/member/modify/<%= member.id %>" class="button">Modify</a>
+                        <form action="/member/delete/<%= member.id %>" method="post" style="display: inline;">
+                            <button type="submit" class="button" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Member Management System</p>
+    </div>
+</body>
+</html>

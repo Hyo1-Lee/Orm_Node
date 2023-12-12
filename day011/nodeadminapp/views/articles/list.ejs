@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 목록 페이지</title>
+    <link rel="stylesheet" href="/styles/article.css" />
+
+</head>
+<body>
+    <h1>게시글 목록 페이지</h1>
+    <a href="/"><img src="/images/home.png" alt="Home" class="home-icon"></a>
+
+    <a href="/articles/create" target="_blank">신규 게시글 작성</a>
+    <table>
+        
+        <thead>
+            <tr>
+                <th>글 번호</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>조회수</th>
+                <th>아이피 주소</th>
+                <th>작성자</th>
+                <th>작성 일자</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var i=0;i<articles.length;i++){%>
+                <tr>
+                    <td>
+                        <a href="/articles/update?idx=<%=articles[i].articleIDX%>">
+                            <%= articles[i].articleIDX %>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/articles/modify/<%=articles[i].title%>">
+                            <%= articles[i].title %>
+                        </a>
+                    </td>
+                    <td><%= articles[i].contents %></td>
+                    <td><%= articles[i].view_cnt %></td>
+                    <td><%= articles[i].ipAddress %></td>
+                    <td><%= articles[i].registUsername %></td>
+                    <td><%= articles[i].registDate %></td>
+                </tr>
+            <% } %>
+
+        </tbody>
+        <tfoot>
+
+
+        </tfoot>
+    </table>
+</body>
+</html>

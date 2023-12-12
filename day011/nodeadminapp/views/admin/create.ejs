@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Admin</title>
+    <link rel="stylesheet" href="/styles/admin.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Create New Admin</h1>
+        <form action="/admin/create" method="post" class="admin-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <input type="submit" value="Create Admin" class="button">
+        </form>
+        <a href="/admin/list" class="button">Back to List</a>
+    </div>
+</body>
+</html>
