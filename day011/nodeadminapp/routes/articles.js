@@ -44,13 +44,13 @@ router.get('/modify/:aid',async(req,res)=>{
 });
 
 router.post('/modify/:aid',async(req,res)=>{
-    res.redirect("/articles");
+    res.redirect("/articles/list");
 });
 
-router.get('/delete',async(req, res)=>{
+router.get('/delete/:aid',async(req, res)=>{
     var articleIDX = req.query.aidx;
 
-    res.redirect('/articles');
+    res.redirect("/articles/list");
 });
 
 module.exports = router;

@@ -5,14 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var articlesRouter = require('./routes/articles');
 var channelRouter = require('./routes/channel');
 var memberRouter = require('./routes/member');
 var messageRouter = require('./routes/message');
 var session = require('express-session');
-
 
 var app = express();
 
@@ -28,7 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/views/src/assets'));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/articles', articlesRouter);
 app.use('/channel', channelRouter);
