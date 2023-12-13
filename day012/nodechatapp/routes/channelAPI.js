@@ -33,7 +33,7 @@ router.post('/delete', function(req, res) {
 
 router.get('/:cid', async (req, res) => {
   try {
-      const channelId = parseInt(req.params.cid, 10); // Convert the parameter to an integer
+      const channelId = parseInt(req.params.cid, 10);
       const channels = await getChannelsData();
       const channel = channels.find(c => c.channel_id === channelId);
 

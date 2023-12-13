@@ -33,9 +33,9 @@ router.post('/delete', function(req, res) {
 
 router.get('/:mid', async (req, res) => {
     try {
-        const memberId = parseInt(req.params.mid, 10); // Ensure the ID is an integer
+        const memberId = parseInt(req.params.mid, 10);
         const members = await getMembersData();
-        const member = members.find(m => m.member_id === memberId); // Find member by ID
+        const member = members.find(m => m.member_id === memberId); 
 
         if (member) {
             res.json(member);
