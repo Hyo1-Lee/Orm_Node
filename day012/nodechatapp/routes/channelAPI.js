@@ -19,8 +19,26 @@ router.get('/all', async (req, res) => {
   }
 });
 
-router.post('/create', function(req, res) {
-    res.json({ message: "Channel created" });
+// /api/channel/create
+router.post('/create', async(req, res)=>{
+  
+  var channel_id = req.body.channel_id;
+  var name = req.body.name
+  var img_path = req.body.img_path
+  var state_code = req.body.state_code
+  var reg_date = req.body.reg_date
+  var edit_date = req.body.edit_date
+
+  var channel = {
+    channel_id,
+    name,
+    img_path,
+    state_code,
+    reg_date,
+    edit_date
+  };
+
+  res.json(channel);
 });
 
 router.post('/modify', function(req, res) {

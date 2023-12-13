@@ -20,7 +20,31 @@ router.get('/all', async (req, res) => {
 });
 
 router.post('/create', function(req, res) {
-    res.json({ message: "Member created" });
+    var member_id = req.body.member_id;
+    var email = req.body.email
+    var name = req.body.name
+    var profile_img_path = req.body.profile_img_path
+    var telephone = req.body.telephone
+    var entry_type_code = req.body.entry_type_code
+    var use_state_code = req.body.use_state_code
+    var birth_date = req.body.birth_date
+    var reg_date = req.body.reg_date
+    var edit_date = req.body.edit_date
+
+    var member = {
+        member_id,
+        email,
+        name,
+        profile_img_path,
+        telephone,
+        entry_type_code,
+        use_state_code,
+        birth_date,
+        reg_date,
+        edit_date
+    };
+
+    res.json(member);
 });
 
 router.post('/modify', function(req, res) {
