@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="/styles/chat.css">
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Chat Rooms</h1>
+        <% channels.forEach(channel => { %>
+            <div class="chat-room">
+                <h2><%= channel.name %></h2>
+                <a href="/chat/<%= channel.channel_id %>">Join</a>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
