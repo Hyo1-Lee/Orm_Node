@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var expressLayouts = require('express-ejs-layouts');
 
 var indexRouter = require('./routes/index');
 var articleRouter = require('./routes/article');
@@ -13,6 +14,13 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//레이아웃 설정
+app.set('layout', 'layout'); // 해당 노드 앱의 모든 (콘텐츠) 뷰 파일의 기본 레이아웃 ejs 파일 설정하기
+app.set("layout extractScripts", true); // 콘텐츠 페이지 내 script 태그를 레이아웃에 통과할지 여부
+app.set("layout extractStyles", true); // 콘텐츠 페이지 내 style 태그를 레이아웃에 통과할지 여부
+app.set("layout extractMetas", true); // 콘텐츠 페이지 내 meta 태그를 레이아웃에 통과할지 여부
+app.use(expressLayouts); 
 
 app.use(logger('dev'));
 app.use(express.json());
