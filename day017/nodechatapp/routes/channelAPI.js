@@ -21,7 +21,6 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// /api/channel/create
 router.post("/create", async (req, res) => {
   var channel_id = req.body.channel_id;
   var name = req.body.name;
@@ -89,20 +88,26 @@ router.post("/delete", async (req, res) => {
   var channel_id = req.body.channel_id;
 
   try {
-      let channels = await getChannelsData();
+    let channels = await getChannelsData();
 
-      const index = channels.findIndex(c => c.channel_id === channel_id);
+    const index = channels.findIndex((c) => c.channel_id === channel_id);
 
-      if (index !== -1) {
-          channels.splice(index, 1);
-          await fs.writeFile(CHANNELS_FILE, JSON.stringify(channels, null, 2), 'utf8');
+    if (index !== -1) {
+      channels.splice(index, 1);
+      await fs.writeFile(
+        CHANNELS_FILE,
+        JSON.stringify(channels, null, 2),
+        "utf8"
+      );
 
-          res.json({ message: "Channel deleted successfully" });
-      } else {
-          res.status(404).json({ message: "Channel not found" });
-      }
+      res.json({ message: "Channel deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Channel not found" });
+    }
   } catch (error) {
-      res.status(500).json({ message: "Error deleting the channel", error: error });
+    res
+      .status(500)
+      .json({ message: "Error deleting the channel", error: error });
   }
 });
 

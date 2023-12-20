@@ -88,15 +88,38 @@ router.post("/modify", async (req, res) => {
       );
       res.json({ message: "Member modified successfully", member: member });
     } else {
-      res.status(404).json({ message: "Channel not found" });
+      res.status(404).json({ message: "member not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error saving the channel", error: error });
+    res.status(500).json({ message: "Error saving the member", error: error });
   }
 });
 
 router.post("/delete", async (req, res) => {
-  res.json({ message: "Member deleted" });
+  var member_id = req.body.member_id;
+
+  try {
+    let members = await getMembersData();
+
+    const index = members.findIndex((c) => c.member_id === member_id);
+
+    if (index !== -1) {
+      members.splice(index, 1);
+      await fs.writeFile(
+        MEMBERS_FILE,
+        JSON.stringify(members, null, 2),
+        "utf8"
+      );
+
+      res.json({ message: "Member deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Member not found" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting the Member", error: error });
+  }
 });
 
 router.get("/:mid", async (req, res) => {
