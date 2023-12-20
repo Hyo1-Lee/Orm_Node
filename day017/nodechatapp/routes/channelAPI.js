@@ -22,20 +22,30 @@ router.get("/all", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
+  var community_id = req.body.community_id;
   var channel_id = req.body.channel_id;
   var name = req.body.name;
+  var info = req.body.info;
+  var room_size = req.body.room_size;
   var img_path = req.body.img_path;
   var state_code = req.body.state_code;
   var reg_date = req.body.reg_date;
+  var reg_id = req.body.reg_id;
   var edit_date = req.body.edit_date;
+  var edit_id = req.body.edit_id;
 
   var channel = {
+    community_id,
     channel_id,
     name,
+    info,
+    room_size,
     img_path,
     state_code,
     reg_date,
+    reg_id,
     edit_date,
+    edit_id,
   };
   try {
     const channels = await getChannelsData();
@@ -52,23 +62,33 @@ router.post("/create", async (req, res) => {
 });
 
 router.post("/modify", async (req, res) => {
+  var community_id = req.body.community_id;
   var channel_id = req.body.channel_id;
   var name = req.body.name;
+  var info = req.body.info;
+  var room_size = req.body.room_size;
   var img_path = req.body.img_path;
   var state_code = req.body.state_code;
   var reg_date = req.body.reg_date;
+  var reg_id = req.body.reg_id;
   var edit_date = req.body.edit_date;
+  var edit_id = req.body.edit_id;
 
   try {
     let channels = await getChannelsData();
     let channel = channels.find((c) => c.channel_id === channel_id);
 
     if (channel) {
+      channel.community_id = community_id;
       channel.name = name;
+      channel.info = info;
+      channel.room_size = room_size;
       channel.img_path = img_path;
       channel.state_code = state_code;
       channel.reg_date = reg_date;
+      channel.reg_id = reg_id;
       channel.edit_date = edit_date;
+      channel.edit_id = edit_id;
 
       await fs.writeFile(
         CHANNELS_FILE,
