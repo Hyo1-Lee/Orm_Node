@@ -31,7 +31,6 @@ router.post('/', async(req, res)=>{
     }
     else{
       res.render('index', { error: 'Invalid credentials' });
-      // pop up here: "Id or password does not match"
     }
   } catch (error) {
     res.status(500).json({ message: "Error", error: error });

@@ -39,18 +39,18 @@
     </div>
     <% } %>
 
-    <div class="login-body">
+    <div class="login-body" id = entryTypeForm>
       <a href="/chat" class="login-logo">
         <img src="img/logo.svg" alt="Quick Chat" />
       </a>
       <h6>Welcome back,<br />Please login to your account.</h6>
       <form action="/" method="post">
         <div class="field-wrapper">
-          <input type="email" name="id" autofocus />
+          <input type="email" name="id" id="id" autofocus/>
           <div class="field-placeholder">Email ID</div>
         </div>
         <div class="field-wrapper mb-3">
-          <input type="password" name="password" />
+          <input type="password" name="password" id="pwd" />
           <div class="field-placeholder">Password</div>
         </div>
         <div class="actions">
@@ -76,4 +76,23 @@
       $('#errorModal').modal('show');
     });
   <% } %>
+
+  $(document).ready(function(){
+    $("#id").focus();
+  })
+
+  $("#entryTypeForm").submit(function(){
+    if($("#id").val() == ""){
+      alert("Type in your e-mail account.");
+      id.focus();
+      return false;
+    }
+
+    if ($("#pwd").val() == ""){
+      alert("Type in your password.");
+      pwd.focus();
+      return false;
+    }
+  })
+  
 </script>
