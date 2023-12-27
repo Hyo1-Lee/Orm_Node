@@ -4,10 +4,21 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// ORM 기반 DB 연결 정보 참조
+var sequelize = require('./models/index').sequelize;
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var memberRouter = require('./routes/member');
+var memberAPIRouter = require('./routes/memberAPI');
+
+//dotenv 어플리케이션 환경 설정 관리 패키지 참조 및 구성
+require('dotenv').config(); 
 
 var app = express();
+
+//DB 연결정보를 통해 실제 DB 연결 및 DB 스키마 동기화 처리
+sequelize.sync(); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use ('/member', memberRouter);
+app.use('/api/member', memberAPIRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
