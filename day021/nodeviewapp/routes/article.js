@@ -4,6 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../models/index.js');
+var Op = db.Sequelize.Op;
 
 // 게시글 목록 조회 웹페이지 요청 및 응답 라우팅메소드
 router.get('/list', async(req, res)=>{
@@ -16,8 +17,17 @@ router.get('/list', async(req, res)=>{
 
     // step1: DB에서 모든 게시글 데이터 목록 조회
     // db.Article.findAll() 모든 게시글 데이터 목록 조회
-    // SELECT * FROM article; sql 쿼리로 변환되어 DB에 전달
-    var articles = await db.article.findAll();
+    // SELECT article_id,,, FROM article where is_display_code and view_count!=0; sql 쿼리로 변환되어 DB에 전달
+    var articles = await db.article.findAll(
+        {
+            attributes:['article_id', 'title', 'view_count', 'reg_date'],
+            where:{
+                is_display_code:1,
+                view_count:{[op.not]:0}
+            },
+            order:[['article_id', 'DESC']] // DESC 내림차순, ASC 오름차순
+        }
+    );
 
     // step2: 게시글 전체 목록을 list.ejs 뷰에 전달
     res.render('article/list.ejs', {articles,searchOption});
@@ -97,8 +107,6 @@ router.get('/delete', async(req, res)=>{
     var articleIdx = req.query.aid;
 
     var deletedCnt = await db.Article.destroy({where:{article_id:articleIdx}})
-
-    
     // step3: 게시글 목록 페이지로 이동시킨다.
     res.redirect('/article/list');
 });
