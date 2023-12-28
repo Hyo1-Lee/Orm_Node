@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modify Message</title>
+    <link rel="stylesheet" href="/styles/message.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Modify Message</h1>
+        <form action="/message/modify/<%= message_idx %>" method="post" class="message-form">
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <input type="submit" value="Update Message" class="button">
+        </form>
+        <a href="/message/list" class="button">Back to List</a>
+    </div>
+</body>
+</html>
