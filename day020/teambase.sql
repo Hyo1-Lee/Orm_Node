@@ -1,0 +1,1 @@
+SELECT * FROM modu_chat2.admin;

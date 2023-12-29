@@ -13,7 +13,7 @@ VALUES('test2@test.co.kr', '1234', 'Juan', '', '010-1234-5278', 1, 1, '860512', 
 
 INSERT INTO member(email, member_password, name, profile_img_path, telephone, entry_type_code, use_state_code, birth_data, reg_date, reg_member_id)
 VALUES('test3@test.co.kr', '1234', 'Carlos', '', '010-1234-5623', 1, 1, '581214', now(), 1);
-# READ DATA - 데이터 조회/SELECT 구문
+# READ DATA - 데이터articlearticle 조회/SELECT 구문
 
 # READ DATA - 데이터 저회 / SELECT 구문
 SELECT * FROM member;
