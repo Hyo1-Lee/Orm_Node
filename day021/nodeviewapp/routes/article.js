@@ -29,8 +29,17 @@ router.get('/list', async(req, res)=>{
         }
     );
 
+    var articleCount = await db.article.count(
+        {
+            where:{
+                is_display_code:1,
+                view_count:{[op.not]:0}
+            }
+        }
+    );
+
     // step2: 게시글 전체 목록을 list.ejs 뷰에 전달
-    res.render('article/list.ejs', {articles,searchOption});
+    res.render('article/list.ejs', {articles, searchOption, articleCount});
 });
 
 // 게시글 목록에서 조회 옵션 데이터를 전달받아 게시글 목록 조회 후
