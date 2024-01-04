@@ -1,0 +1,176 @@
+<!--우측 상단 헤더 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>관리자계정 신규등록</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">홈</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>관리자계정</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>신규등록</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!--우측 콘텐츠 영역 -->
+<form action="/admin/create" id='articleForm' method="post">
+    <div class="wrapper wrapper-content">
+        <div class="ibox-content m-b-sm border-bottom">
+            <!--우측 콘텐츠 영역 -->
+            <!-- <div class="wrapper wrapper-content animated fadeInRight ecommerce"> -->
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">소속회사</label>
+                        <select name="company_code" id="company_code" class="form-control">
+                            <option value=0>선택</option>
+                            <option value=1>SAMSUNG</option>
+                            <option value=2>APPLE</option>
+                            <option value=3>LG</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">부서명</label>
+                        <select name="department_name" id="department_name" class="form-control">
+                            <option value=0>선택</option>
+                            <option value="인사">인사</option>
+                            <option value="IT">IT</option>
+                            <option value="마케팅">마케팅</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">이름</label>
+                        <input type="text" name="admin_name" id="admin_name" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">아이디</label>
+                        <input type="text" name="admin_id" id="admin_id" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">비밀번호</label>
+                        <input type="password" name="admin_password" id="admin_password" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">비밀번호 확인</label>
+                        <input type="password" name="admin_password_confirm" id="admin_password_confirm" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">이메일</label>
+                        <input type="text" name="email" id="email" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">전화번호</label>
+                        <input type="text" name="telephone" id="telephone" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">계정활성화상태</label>
+                        <select name="use_status_code" id="use_status_code" class="form-control">
+                            <option value=1>활성화</option>
+                            <option value=0>비활성화</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- 저장/목록 이동 버튼 -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">저장</button>
+                <a href="/channel/list" class="btn btn-info">목록</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    // jquery를 이용한 form submit 유효성 검사
+    $(document).ready(function () {
+        $('#articleForm').submit(function (event) {
+            event.preventDefault();
+            var company_code = $('#company_code').val();
+            var department_name = $('#department_name').val();
+            var admin_name = $('#admin_name').val();
+            var admin_id = $('#admin_id').val();
+            var admin_password = $('#admin_password').val();
+            var admin_password_confirm = $('#admin_password_confirm').val();
+            var email = $('#email').val();
+            var telephone = $('#telephone').val();
+            var use_status_code = $('#use_status_code').val();
+
+            if (company_code == 0) {
+                alert('소속회사를 선택해주세요.');
+                $('#company_code').focus();
+                return false;
+            }
+            if (department_name == 0) {
+                alert('부서명을 선택해주세요.');
+                $('#department_name').focus();
+                return false;
+            }
+            if (!admin_name) {
+                alert('이름을 입력해주세요.');
+                $('#admin_name').focus();
+                return false;
+            }
+            if (!admin_id) {
+                alert('아이디를 입력해주세요.');
+                $('#admin_id').focus();
+                return false;
+            }
+            if (!admin_password) {
+                alert('비밀번호를 입력해주세요.');
+                $('#admin_password').focus();
+                return false;
+            }
+            if (!admin_password_confirm) {
+                alert('비밀번호 확인을 입력해주세요.');
+                $('#admin_password_confirm').focus();
+                return false;
+            }
+            if (admin_password != admin_password_confirm) {
+                alert('비밀번호가 일치하지 않습니다.');
+                $('#admin_password_confirm').focus();
+                return false;
+            }
+            if (!email) {
+                alert('이메일을 입력해주세요.');
+                $('#email').focus();
+                return false;
+            }
+            if (!telephone) {
+                alert('전화번호를 입력해주세요.');
+                $('#telephone').focus();
+                return false;
+            }
+            if (!use_status_code) {
+                alert('계정활성화상태를 선택해주세요.');
+                $('#use_status_code').focus();
+                return false;
+            }
+            this.submit();
+        });
+    });
+</script>
