@@ -9,19 +9,33 @@ const bcrypt = require("bcryptjs");
 const AES = require("mysql-aes");
 var db = require("../models/index.js");
 var Op = db.Sequelize.Op;
+var sequelize = db.sequelize;
+const { QueryTypes } = sequelize;
 
 router.get("/list", async (req, res, next) => {
-	var admins = await db.Admin.findAll({
-		attributes: [
-			"admin_member_id",
-			"email",
-			"admin_name",
-			"telephone",
-			"dept_name",
-			"used_yn_code",
-			"reg_date",
-		],
-	});
+	// var admins = await db.Admin.findAll({
+	// 	attributes: [
+	// 		"admin_member_id",
+	// 		"email",
+	// 		"admin_name",
+	// 		"telephone",
+	// 		"dept_name",
+	// 		"used_yn_code",
+	// 		"reg_date",
+	// 	],
+	// });
+
+	var sqlQuery =`SELECT 
+    company_code,admin_id,admin_password,admin_name,
+    CONVERT(AES_DECRYPT(UNHEX(email),'${process.env.MYSQL_AES_KEY}')USING utf8) as email,
+    CONVERT(AES_DECRYPT(UNHEX(telephone),'${process.env.MYSQL_AES_KEY}')USING utf8) as telephone,
+    dept_name,used_yn_code,reg_date,reg_member_id 
+    FROM admin_member;`;
+
+    var admins = await sequelize.query(sqlQuery,{
+        raw: true,
+        type: QueryTypes.SELECT,
+    });
 
 	res.render("admin/list.ejs", { admins });
 });
