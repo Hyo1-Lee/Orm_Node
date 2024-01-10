@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require("dotenv").config();
+const cors = require("cors");
+var sequelize = require('./models/index.js').sequelize;
 var expressLayouts = require('express-ejs-layouts');
 
 
@@ -19,6 +22,16 @@ var channelAPIRouter = require('./routes/channelAPI.js');
 
 
 var app = express();
+sequelize.sync();
+// app.use(cors());
+
+//특정 도메인주소만 허가
+app.use(
+  cors({
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    origin: ["http://localhost:3005", "https://beginmate.com", "https://naver.com"],
+  })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +44,6 @@ app.set("layout extractScripts", true);
 app.set("layout extractStyles", true);
 app.set("layout extractMetas", true);
 app.use(expressLayouts);
-
 
 
 
