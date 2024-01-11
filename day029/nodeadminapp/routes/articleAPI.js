@@ -4,6 +4,20 @@
 
 var express = require('express');
 var router = express.Router();
+var multer = require("multer");
+var moment = require("moment");
+
+var storage = multer.diskStorage({
+	destination(req, file, cb) {
+		cb(null, "public/upload/");
+	},
+	filename(req, file, cb) {
+		cb(null, `${moment(Date.now()).format('YYYYMMDDHHMMss')}__${file.originalname}`);
+	},
+});
+var simple_upload = multer({ storage: storage });
+var {upload} = require("../common/aws_s3");
+
 
 //전체 게시글 목록 데이터 조회 반환 API 라우팅 메소드 
 //http://localhost:3000/api/article/all
@@ -203,6 +217,71 @@ router.post('/update',async(req,res)=>{
     res.json(apiResult);
 });
 
+router.post('/upload', simple_upload.single("file"), async (req, res) => {
+    var apiResult = {
+        code:200,
+        data:null,
+        result:""
+    };
+
+    try{
+        const uploadFile = req.file;
+        var filePath ="/upload/"+uploadFile.filename;
+        var fileName = uploadFile.filename;
+        var fileOrignalName = uploadFile.originalname;
+        var fileSize = uploadFile.size;
+        var fileType=uploadFile.mimetype;
+        
+        apiResult.code = 200;
+        apiResult.data = {
+            filePath,
+            fileName,
+            fileOrignalName,
+            fileSize,
+            fileType
+        };
+        apiResult.result = "Ok"
+        res.json(apiResult);
+    }catch(err){
+        apiResult.code = 500;
+        apiResult.data = null;
+        apiResult.result = "Failed"
+        res.json(apiResult);
+    }
+});
+
+router.post('/uploadS3', upload.getUpload('').fields([{ name: 'file', maxCount: 1 }]), async (req, res) => {
+    var apiResult = {
+        code:200,
+        data:null,
+        result:""
+    };
+
+    try{
+        const uploadFile = req.files.file[0];
+        var filePath ="/upload/"+uploadFile.filename;
+        var fileName = uploadFile.filename;
+        var fileOrignalName = uploadFile.originalname;
+        var fileSize = uploadFile.size;
+        var fileType=uploadFile.mimetype;
+        
+        apiResult.code = 200;
+        apiResult.data = {
+            filePath,
+            fileName,
+            fileOrignalName,
+            fileSize,
+            fileType
+        };
+        apiResult.result = "Ok"
+        res.json(apiResult);
+    }catch(err){
+        apiResult.code = 500;
+        apiResult.data = null;
+        apiResult.result = "Failed"
+        res.json(apiResult);
+    }
+});
 
 //단일 게시글 데이터 조회 반환 API 라우팅 메소드 
 //http://localhost:3000/api/article/1

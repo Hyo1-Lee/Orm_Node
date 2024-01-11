@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>프론트 엔드 AJAX 파일 업로드 샘플</h1>
+    <form>
+        파일선택: <input type="file" name="file" id="file">
+    </form>
+
+    <script src="/js/jquery-3.1.1.min.js"></script>
+
+    <script>
+        // 사용자가 사일을 변경선택하면 발생하는 Onchange 이벤트
+        $("#file").change(function(){
+            var data = new FormData();
+
+            // data.append("폼으로 전송할 name값", "파일객체")
+            data.append("file", $("input[name=file]")[0].files[0]);
+
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "/api/article/uploadS3",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(result){
+                    console.log(result);
+                }
+            })
+        });
+    </script>
+</body>
+</html>
