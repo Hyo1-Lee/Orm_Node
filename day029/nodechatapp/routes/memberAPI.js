@@ -3,6 +3,9 @@ var router = express.Router();
 var byctrpt = require("bcryptjs");
 var AES = require("mysql-aes");
 var db = require("../models/index.js");
+var jwt = require("jsonwebtoken");
+
+var {tokenAuthChecking} = require("./apiMiddleware.js");
 /* 
   - 신규 회원 가입 처리 RESTful API 라우팅 메소드
   - http://localhost:3000/api/member/entry
@@ -95,8 +98,22 @@ router.post("/login", async (req, res, next) => {
 			if (isMatch) {
 				resultMsg = "Ok";
 				member.member_password = "";
+				member.telephone = AES.decrypt(member.telephone, process.env.MYSQL_AES_KEY);
+
+				// JWT 토큰 생성
+				var memberTokenData = {
+					member_id: member.member_id,
+					email: member.email,
+					name: member.name,
+					profile_img_path: member.profile_img_path,
+					telephone: member.telephone,
+					etc:"etc",
+				}
+
+				var token = await jwt.sign(memberTokenData, process.env.JWT_SECRET,{expiresIn:'2h', issuer:'lee'});
+
 				apiResult.code = 200;
-				apiResult.data = member;
+				apiResult.data = token;
 				apiResult.msg = resultMsg;
 			} else {
 				resultMsg = "NotCorrectword";
@@ -114,4 +131,42 @@ router.post("/login", async (req, res, next) => {
 	res.json(apiResult);
 });
 
+/*
+- 로그인한 현재 사용자의 회원 기본 정보 조회 처리 RESTful API 라우팅 메소드
+- http://localhost:3000/api/member/profile
+- 로그인시 발급한 JWT는 http
+*/
+router.get("/profile", tokenAuthChecking, async(req, res, next) =>{
+	var apiResult = {
+		code: 400,
+		data: null,
+		msg: "",
+	};
+	try{
+		// 웹브라우저에서 전달된 JWT Bearer 토큰 문자열 추출
+		var token = req.headers.authorization.split("Bearer ")[1];
+		var tokenJsonData = await jwt.verify(token, process.env.JWT_SECRET);
+		
+		// 웹브라우저에서 전달된 JWT 토큰 문자열에서 필요한 로그인 사용자 정보 추출
+		var loginMemberId = tokenJsonData.member_id;
+		var loginMemberEmail = tokenJsonData.email;
+
+		var dbMember = await db.Member.findOne({
+			where:{
+				member_id:loginMemberId,
+			},
+			attributes:['email','name','profile_img_path','telephone']
+		});
+		dbMember.telephone = AES.decrypt(dbMember.telephone, process.env.MYSQL_AES_KEY);
+
+		apiResult.code = 200;
+		apiResult.data = dbMember;
+		apiResult.msg = "ok";
+	}catch(err){
+		apiResult.code = 500;
+		apiResult.data = null;
+		apiResult.msg = "Failed";
+	}
+	res.json(apiResult);
+})
 module.exports = router;

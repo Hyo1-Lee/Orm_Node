@@ -113,7 +113,8 @@
 					console.log("회원로그인 결과값 확인: ", result);
 					if(result.code == 200){
 						//로그인 성공
-						location.href="/";
+						localStorage.setItem("userauthtoken", result.data);
+						location.href="/main.html";
 					}else if(result.code == 400){
 						if(result.msg === "NotExistEmail"){
 							alert("동일한 메일주소가 존재하지 않습니다.");

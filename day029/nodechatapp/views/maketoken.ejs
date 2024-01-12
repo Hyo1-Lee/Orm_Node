@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT 생성하기</title>
+</head>
+<body>
+    <h1>JWT 만들기</h1>
+    <form action="/maketoken" method="post">
+        사용자 아이디: <input type="text" name="userid"><br>
+        메일 주소: <input type="email" name="email"><br>
+        사용자 유형: <input type="text" name="usertype"><br>
+        이름: <input type="text" name="name"><br>
+        전화번호: <input type="text" name="telephone"><br>
+        <button type="submit">토큰 생성</button>
+        <hr>
+        생성된 토큰 값: <%= token %>
+    </form>
+</body>
+</html>
