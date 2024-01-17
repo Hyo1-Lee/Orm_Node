@@ -15,7 +15,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var channelRouter = require('./routes/channel');
 
-
 //RESTFul 데이터 요청과 응답처리 전용 라우터파일 참조 
 var memberAPIRouter = require('./routes/memberAPI.js');
 var channelAPIRouter = require('./routes/channelAPI.js');

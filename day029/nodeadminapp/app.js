@@ -25,11 +25,11 @@ app.use(
 	session({
 		resave: false,
 		saveUninitialized: true,
-		secret: "testsecret",
+		secret: process.env.COOKIE_SECRET,
 		cookie: {
 			httpOnly: true,
 			secure: false,
-			maxAge: 1000 * 60 * 5, //5분동안 서버세션을 유지하겠다.(1000은 1초)
+			maxAge: 1000 * 60 * 20, //5분동안 서버세션을 유지하겠다.(1000은 1초)
 		},
 	})
 );

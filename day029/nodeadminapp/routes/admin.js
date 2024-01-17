@@ -7,12 +7,13 @@ var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcryptjs");
 const AES = require("mysql-aes");
+const {isLoggedin, isNotLoggedin} = require("./sessionMiddleware")
 var db = require("../models/index.js");
 var Op = db.Sequelize.Op;
 var sequelize = db.sequelize;
 const { QueryTypes } = sequelize;
 
-router.get("/list", async (req, res, next) => {
+router.get("/list", isLoggedin, async (req, res, next) => {
 	// var admins = await db.Admin.findAll({
 	// 	attributes: [
 	// 		"admin_member_id",
@@ -40,7 +41,7 @@ router.get("/list", async (req, res, next) => {
 	res.render("admin/list.ejs", { admins });
 });
 
-router.post("/list", async (req, res) => {
+router.post("/list", isLoggedin, async (req, res) => {
 	// step1: 사용자가 선택/입력한 조회옵션 데이터 추출
 	var email = req.body.email;
 	var adminName = req.body.adminName;
@@ -69,11 +70,11 @@ router.post("/list", async (req, res) => {
 	res.render("admin/list.ejs", { admins, searchOption });
 });
 
-router.get("/create", async (req, res) => {
+router.get("/create", isLoggedin, async (req, res) => {
 	res.render("admin/create.ejs");
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", isLoggedin, async (req, res) => {
 	// step1: 사용자가 입력한 게시글 등록 데이터 추출
 	var companyCode = req.body.companyCode;
 	var adminid = req.body.adminid;
@@ -111,7 +112,7 @@ router.post("/create", async (req, res) => {
 	res.redirect("/admin/list");
 });
 
-router.get("/modify/:aid", async (req, res) => {
+router.get("/modify/:aid", isLoggedin, async (req, res) => {
 	var aid = req.params.aid;
 	var admin = await db.Admin.findOne({ where: { admin_member_id: aid } });
 	admin.email = AES.decrypt(admin.email, process.env.MYSQL_AES_KEY);
@@ -120,7 +121,7 @@ router.get("/modify/:aid", async (req, res) => {
 });
 
 // 목록페이지 이동처리
-router.post("/modify/:id", async (req, res) => {
+router.post("/modify/:id", isLoggedin, async (req, res) => {
 	var aid = req.params.id;
 
 	// step1: 사용자가 입력한 게시글 등록 데이터 추출
@@ -145,7 +146,7 @@ router.post("/modify/:id", async (req, res) => {
 });
 
 // 목록페이지 이동처리
-router.get("/delete/:aid", async (req, res) => {
+router.get("/delete/:aid", isLoggedin, async (req, res) => {
 	var adminIdx = req.query.aid;
 
 	var deletedCnt = await db.Admin.destroy({ where: { admin_member_id: adminIdx } });
