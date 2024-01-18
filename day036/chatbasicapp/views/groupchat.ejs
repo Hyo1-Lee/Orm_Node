@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그룹 채팅 사용자간 채팅하기</title>
+</head>
+<body>
+    <h1>그룹채팅 사용자간 채팅하기</h1>
+    <p> 그룹채팅은 채팅방 입장하고 메시지를 발송해야함</p>
+    채팅방명(채널명)<input type="text" id="channel" value="채널1"><br>
+    <button id="btnEntry">입장</button><br>
+    <hr>
+
+    대화명: <input type="text" id="nickName" value="lee1"><br>
+    메세지: <input type="text" id="message"><br>
+    <button id="btnSend">전송</button>
+
+    <hr>
+    대화이력보기
+    <ul id="chatHistory"></ul>
+
+    <!-- jquery cdn 라이브러리 참조  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- socket.io javascript library 참조  -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        var socket = io.connect('/');
+
+        $("#btnEntry").click(function(){
+            var channelId = $("#channel").val();
+            var nickName = $("#nickName").val();
+            socket.emit('entry', channelId, nickName);
+        });
+
+        $("#btnSend").click(function(){
+            var nickName = $("#nickName").val();
+            var message = $("#message").val();
+            var groupMsg={
+                channelId: $("#channel").val(),
+                nickName: nickName,
+                message: message
+            }
+            // socket.emit('broadcast', msgData);
+            socket.emit('groupmsg', groupMsg);
+        })
+
+        socket.on('receiveAll', function(msgData){
+            console.log("서버 소켓에서 보내준 메세지: ", msgData);
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+        });
+
+        socket.on('receiveTest', function(msgData){
+            console.log("서버 소켓에서 보내준 메세지: ", msgData);
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+        });
+        
+        socket.on('entry', async(channelId, nickName)=>{
+            socket.join(channelId);
+
+            // 채널 입장 사실 사용자들에게 알려주는 3가지 방법
+            // 현재 접속한 사용자 (나 자신)에게만 메세지 보내기
+            socket.emit('entryok',`${nickName} 대화명으로 입장했습니다.`)
+
+            //현재 접속자를 제외한 같은 채팅방내 모든 사용자에게 메시지 발송
+            socket.to(roomId).emit("entryok",`${nickName}님이 채팅방에 입장했습니다`);
+
+            // 해당 채팅방의 나를 포함한 모든 사용자에게 메세지 보내기
+            io.to(channelId).emit("entryok",`${nickName}님이 채팅방에 입장했습니다`);
+        });
+
+        socket.on('entryok', function(msgData){
+            console.log("서버 소켓에서 보내준 메세지: ", msgData);
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+        });
+
+        socket.on('receivedGroupMsg', function(groupMsg){
+            console.log("서버 소켓에서 보내준 메세지: ", groupMsg);
+            $("#chatHistory").append(`<li>${groupMsg}</li>`);
+        });
+    </script>
+
+</body>
+</html>

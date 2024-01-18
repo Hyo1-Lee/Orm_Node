@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모든 사용자간 채팅하기</title>
+</head>
+<body>
+    <h1>서버소켓과 연결된 모든 사용자간 채팅하기</h1>
+
+    대화명: <input type="text" id="nickName"><br>
+    메세지: <input type="text" id="message"><br>
+    <button id="btnSend">전송</button>
+
+    <hr>
+    대화이력보기
+    <ul id="chatHistory"></ul>
+
+    <!-- jquery cdn 라이브러리 참조  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- socket.io javascript library 참조  -->
+    <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+
+    <!-- sicket.js Jquery 기반 클라이언트 CDN 라이브러리 참조 -->
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        var socket = io.connect('http://localhost:3000');
+
+        $("#btnSend").click(function(){
+            var nickName = $("#nickName").val();
+            var message = $("#message").val();
+            var msgData = `${nickName} : ${message}`;
+            // socket.emit('broadcast', msgData);
+            socket.emit('test', msgData);
+        })
+
+        socket.on('receiveAll', function(msgData){
+            console.log("서버 소켓에서 보내준 메세지: ", msgData);
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+        });
+
+        socket.on('receiveTest', function(msgData){
+            console.log("서버 소켓에서 보내준 메세지: ", msgData);
+            $("#chatHistory").append(`<li>${msgData}</li>`);
+        });
+        
+    </script>
+
+</body>
+</html>
