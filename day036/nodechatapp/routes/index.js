@@ -27,11 +27,24 @@ router.post("/", async (req, res) => {
 		if (member == null) {
 			resultMsg = "멤버 정보가 등록되지 않았습니다.";
 		} else {
-			if (member.member_password == member_password) {
+			if (bcrypt.compareSync(member_password, member.member_password)) {
+				var token = jwt.sign(
+					{
+						member_id: member.member_id,
+						email: member.email,
+						usertype: member.usertype,
+						name: member.name,
+						telephone: member.telephone,
+					},
+					process.env.JWT_SECRET,
+					{ expiresIn: "1h" }
+				);
+				res.cookie("token", token, { httpOnly: true, secure: true, maxAge: 3600000 });
 				res.redirect("/chat");
 			} else {
 				resultMsg = "암호가 일치하지 않습니다.";
 			}
+			
 		}
 
 		if (resultMsg !== "") {

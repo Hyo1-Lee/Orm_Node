@@ -15,5 +15,6 @@ module.exports = (passport) => {
 		done(null, user);
 	});
 
+	// 로그인 전략 설정
 	local(passport);
 };

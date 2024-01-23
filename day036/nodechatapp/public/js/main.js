@@ -18,6 +18,7 @@ $(".recent-chat-list .chat-cards li").click(function () {
 	$(".chat-content-wrapper").removeClass("d-none");
 });
 
+// chats 아이콘 (기존 대화 채널 목록) 클릭시 채팅창 화면으로 전환
 $(".users-container .users-list li").click(function () {
 	$(".empty-chat-screen").addClass("d-none");
 	$(".chat-content-wrapper").removeClass("d-none");

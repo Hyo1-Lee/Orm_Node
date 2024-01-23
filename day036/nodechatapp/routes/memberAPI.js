@@ -10,17 +10,8 @@ var jwt = require("jsonwebtoken");
 
 var { tokenAuthCheck } = require("./apiMiddleware.js");
 
-// var Member = require('../models/member');
-
-// Get all members
-router.get("/all", async (req, res, next) => {
-	try {
-		var members = await db.Member.findAll();
-		res.json(members);
-	} catch (error) {
-		res.json({ message: "Member not find", error: error });
-	}
-});
+// 각종 열거형 상수값들을 모아놓은 파일
+var constants = require("../common/enum.js");
 
 // 로그인 api
 router.post("/login", async (req, res, next) => {
@@ -349,6 +340,35 @@ router.post("/password/update", tokenAuthCheck, async (req, res) => {
 		apiResult.code = 500;
 		apiResult.data = null;
 		apiResult.msg = error.message;
+	}
+	res.json(apiResult);
+});
+
+router.get('/all', async(req, res, next) =>{
+	apiResult = {
+		code: 400,
+		data: null,
+		msg: "",
+	};
+
+	try{
+		var members = await db.Member.findAll({
+			attributes: [
+				"member_id",
+				"email",
+				"name",
+				"profile_img_path",
+				"telephone",
+			],
+			where: { use_state_code: constants.USE_STATE_CODE_USED },
+		});
+		apiResult.code = 200;
+		apiResult.data = members;
+		apiResult.msg = "ok";
+	}catch(error){
+		apiResult.code = 500;
+		apiResult.data = null;
+		apiResult.msg = "Failed";
 	}
 	res.json(apiResult);
 });
