@@ -3,7 +3,7 @@ var router = express.Router();
 var bycrpt = require("bcryptjs");
 
 // const { isLoggedin, isNotLoggedin } = require("./sessionMiddleware");
-const { isLoggedin, isNotLoggedin } = require("./passportMiddleware.js");
+const { isLoggedin_pass, isNotLoggedin_pass } = require("./passportMiddleware.js");
 var db = require("../models/index.js");
 const passport = require("passport");
 
@@ -12,7 +12,7 @@ const passport = require("passport");
 호출주소: http://localhost:3000/
  */
 // 로그인 한 상태에서만 접근 가능
-router.get("/", isLoggedin, async (req, res, next) => {
+router.get("/", isLoggedin_pass, async (req, res, next) => {
 	// 현재 로그인한 사용자 정보 추출
 	// var admin_id = req.session.loginUser.admin_member_id;
 
@@ -82,7 +82,7 @@ router.post("/login", async (req, res, next) => {
 	기능: 관리자 웹사이트 로그인 처리 메소드 패스포트 로컬 전략 기반 로그인 처리
 	호출 주소: http://localhost:3001/passportLogin
 */
-router.post("/passportLogin", isNotLoggedin, async (req, res, next) => {
+router.post("/passportLogin", isNotLoggedin_pass, async (req, res, next) => {
 	// 패스포트 기발 로그인 인증처리 메소드 호출하여 패스포트 기반으로 로그인 실시
 	// passport,authenticate('로그인 전략', {옵션}, 콜백함수 = done(에러, 성공여부, 메시지))
 	passport.authenticate("local", (authError, admin, info) => {
@@ -108,7 +108,7 @@ router.post("/passportLogin", isNotLoggedin, async (req, res, next) => {
 });
 
 // 패스포트 전용 로그아웃 라우팅 메소드
-router.get("/logout", isLoggedin, async (req, res) => {
+router.get("/logout", isLoggedin_pass, async (req, res) => {
 	req.logout(function (err) {
 		// 로그아웃하고 로그인 페이지로 이동 시키기
 		req.session.destroy();

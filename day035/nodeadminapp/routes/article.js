@@ -5,21 +5,21 @@ var express = require("express");
 var router = express.Router();
 var multer = require("multer");
 var moment = require("moment");
-const uploads = multer({ dest: '/upload/' });
+const uploads = multer({ dest: "/upload/" });
 // const {isLoggedin, isNotLoggedin} = require("./sessionMiddleware")
-const { isLoggedin, isNotLoggedin } = require("./passportMiddleware.js");
+const { isLoggedin_pass, isNotLoggedin_pass } = require("./passportMiddleware.js");
 
 var storage = multer.diskStorage({
 	destination(req, file, cb) {
 		cb(null, "public/upload/");
 	},
 	filename(req, file, cb) {
-		cb(null, `${moment(Date.now()).format('YYYYMMDDHHMMss')}__${file.originalname}`);
+		cb(null, `${moment(Date.now()).format("YYYYMMDDHHMMss")}__${file.originalname}`);
 	},
 });
 
 var simple_upload = multer({ storage: storage });
-var {upload} = require("../common/aws_s3");
+var { upload } = require("../common/aws_s3");
 
 var db = require("../models/index");
 var Op = db.Sequelize.Op;
@@ -30,7 +30,7 @@ const { QueryTypes } = sequelize;
 //게시글 목록 조회 웹페이지 요청 및 응답 라우팅메소드
 //http://localhost:3000/article/list
 //GET
-router.get("/list", isLoggedin, async (req, res) => {
+router.get("/list", isLoggedin_pass, async (req, res) => {
 	var searchOption = {
 		boardTypeCode: "0",
 		title: "",
@@ -83,7 +83,7 @@ router.get("/list", isLoggedin, async (req, res) => {
 //게시글 목록 페이지에 대한 요청과 응답처리
 //http://localhost:/article/list
 //POST
-router.post("/list", isLoggedin, async (req, res) => {
+router.post("/list", isLoggedin_pass, async (req, res) => {
 	//step1: 사용자가 선택/입력한 조회옵션 데이터를 추출한다.
 	var boardTypeCode = req.body.boardTypeCode;
 	var title = req.body.title;
@@ -110,13 +110,12 @@ router.post("/list", isLoggedin, async (req, res) => {
 
 //신규 게시글 등록 웹페이지 요청 및 응답 라우팅 메소드
 //http://localhost:3000/article/create
-router.get("/create", isLoggedin, async (req, res) => {
+router.get("/create", isLoggedin_pass, async (req, res) => {
 	res.render("article/create.ejs");
 });
 
 //신규 게시글 사용자 등록정보 처리 요청 및 응답 라우팅메소드
-router.post("/create", isLoggedin, uploads.array('files', 5), async (req, res) => {
-
+router.post("/create", isLoggedin_pass, uploads.array("files", 5), async (req, res) => {
 	// 게시글 정보 저장
 	var boardTypeCode = req.body.boardTypeCode;
 	var title = req.body.title;
@@ -138,13 +137,13 @@ router.post("/create", isLoggedin, uploads.array('files', 5), async (req, res) =
 	var registedArticle = await db.Article.create(article);
 
 	// 게시글 파일 정보 저장
-    const uploadFile = req.files[0];
-	if(uploadFile != undefined){
-		var filePath ="/upload/"+uploadFile.filename;
+	const uploadFile = req.files[0];
+	if (uploadFile != undefined) {
+		var filePath = "/upload/" + uploadFile.filename;
 		var fileName = uploadFile.filename;
 		var fileOrignalName = uploadFile.originalname;
 		var fileSize = uploadFile.size;
-		var fileType=uploadFile.mimetype;
+		var fileType = uploadFile.mimetype;
 
 		file = {
 			article_id: registedArticle.article_id,
@@ -154,52 +153,57 @@ router.post("/create", isLoggedin, uploads.array('files', 5), async (req, res) =
 			file_type: fileType,
 			reg_date: Date.now(),
 			reg_member_id: 1,
-		}
+		};
 		await db.ArticleFile.create(file);
 	}
-	
+
 	res.redirect("/article/list");
 });
 
-router.post("/creates3", isLoggedin, upload.getUpload('/').fields([{ name: 'file', maxCount: 1 }]), async (req, res) => {
-	//step1: 사용자가 입력한 게시글 등록 데이터 추출
-	var boardTypeCode = req.body.boardTypeCode;
-	var title = req.body.title;
-	var contents = req.body.contents;
-	var articleTypeCode = req.body.articleTypeCode;
-	var isDisplayCode = req.body.isDisplayCode;
-	var register = req.body.register;
+router.post(
+	"/creates3",
+	isLoggedin_pass,
+	upload.getUpload("/").fields([{ name: "file", maxCount: 1 }]),
+	async (req, res) => {
+		//step1: 사용자가 입력한 게시글 등록 데이터 추출
+		var boardTypeCode = req.body.boardTypeCode;
+		var title = req.body.title;
+		var contents = req.body.contents;
+		var articleTypeCode = req.body.articleTypeCode;
+		var isDisplayCode = req.body.isDisplayCode;
+		var register = req.body.register;
 
-    const uploadFile = req.files.file[0];
-    var filePath ="/upload/"+uploadFile.filename;
-    var fileName = uploadFile.filename;
-    var fileOrignalName = uploadFile.originalname;
-    var fileSize = uploadFile.size;
-    var fileType=uploadFile.mimetype;
+		const uploadFile = req.files.file[0];
+		var filePath = "/upload/" + uploadFile.filename;
+		var fileName = uploadFile.filename;
+		var fileOrignalName = uploadFile.originalname;
+		var fileSize = uploadFile.size;
+		var fileType = uploadFile.mimetype;
 
-	var article = {
-		board_type_code: boardTypeCode,
-		title,
-		contents,
-		view_count: 0,
-		ip_address: "111.222.222.222",
-		article_type_code: articleTypeCode,
-		is_display_code: isDisplayCode,
-		reg_member_id: 1,
-		reg_date: Date.now(),
-	};
+		var article = {
+			board_type_code: boardTypeCode,
+			title,
+			contents,
+			view_count: 0,
+			ip_address: "111.222.222.222",
+			article_type_code: articleTypeCode,
+			is_display_code: isDisplayCode,
+			reg_member_id: 1,
+			reg_date: Date.now(),
+		};
 
-	//게시글 정보를 article테이블에 저장하고 저장된 값을 다시 반환받는다.
-	await db.Article.create(article);
-	//var registedArticle = await db.Article.create(article);
+		//게시글 정보를 article테이블에 저장하고 저장된 값을 다시 반환받는다.
+		await db.Article.create(article);
+		//var registedArticle = await db.Article.create(article);
 
-	//step3:등록처리후 게시글 목록 웹페이지로 이동처리
-	res.redirect("/article/list");
-});
+		//step3:등록처리후 게시글 목록 웹페이지로 이동처리
+		res.redirect("/article/list");
+	}
+);
 
 //기존 게시를 삭제처리 요청 및 응답 라우팅메소드
 //http://localhost:3000/article/delete?aid=3
-router.get("/delete", isLoggedin, async (req, res) => {
+router.get("/delete", isLoggedin_pass, async (req, res) => {
 	//step1: 삭제하려는 게시글 고유번호를 추출한다.
 	var articleIdx = req.query.aid;
 
@@ -213,7 +217,7 @@ router.get("/delete", isLoggedin, async (req, res) => {
 //기존 게시글 정보 확인 및 수정 웹페이지 요청과 응답 라우팅 메소드
 //http://localhost:3000/article/modify/1
 //GET
-router.get("/modify/:aid", isLoggedin, async (req, res) => {
+router.get("/modify/:aid", isLoggedin_pass, async (req, res) => {
 	//step1:선택한 게시글 고유번호를 파라메터 방식으로 URL을 통해 전달받음
 	var articleIdx = req.params.aid;
 
@@ -234,7 +238,7 @@ router.get("/modify/:aid", isLoggedin, async (req, res) => {
 //기존 게시글 사용자 수정정보 처리 요청과 응답 라우팅 메소드
 //http://localhost:3000/article/modify/1
 //POST
-router.post("/modify/:aid", isLoggedin, async (req, res) => {
+router.post("/modify/:aid", isLoggedin_pass, async (req, res) => {
 	//게시글 고유번호 URL파라메터에서 추출하기
 	var articleIdx = req.params.aid;
 

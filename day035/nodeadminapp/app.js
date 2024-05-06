@@ -7,7 +7,7 @@ var logger = require("morgan");
 var session = require("express-session");
 var sequelize = require("./models/index").sequelize;
 
-var session = require('express-session');
+var session = require("express-session");
 const redis = require("redis");
 let RedisStore = require("connect-redis")(session);
 
@@ -15,14 +15,14 @@ let redisClient = redis.createClient({
 	host: "127.0.0.1",
 	port: 6379,
 	db: 0,
-	// password: "1234",
+	password: "GYzz001020!!",
 });
 
 var passport = require("passport");
-const passportConfig = require('./passport/index.js');
+const passportConfig = require("./passport/index.js");
 
 //일회성(휘발성) 데이터를 특정 페이지(뷰)에 전달하는 방식제공 플래시 팩키지참조하기
-var flash = require('connect-flash');
+var flash = require("connect-flash");
 
 //express-ejs-layouts 패키지 참조하기
 var expressLayouts = require("express-ejs-layouts");
@@ -58,18 +58,19 @@ passportConfig(passport);
 
 app.use(
 	session({
-	store: new RedisStore ({ client: redisClient }),
-	saveUninitialized: true,
-	secret: "moiin",
-	resave: false,
-	cookie: {
-	httpOnly: true,
-	secure: false,
-	//maxAge : 3600000, 세션유지 시간설정 : 1 시간
-	},
-	ttl : 250, //Redis DB 에서 세션정보가 사라지게 할지에 대한 만료시간설정
-	token:process.env.COOKIE_SECRET
-}));
+		store: new RedisStore({ client: redisClient }),
+		saveUninitialized: true,
+		secret: "moiin",
+		resave: false,
+		cookie: {
+			httpOnly: true,
+			secure: false,
+			//maxAge : 3600000, 세션유지 시간설정 : 1 시간
+		},
+		ttl: 250, //Redis DB 에서 세션정보가 사라지게 할지에 대한 만료시간설정
+		token: process.env.COOKIE_SECRET,
+	})
+);
 
 // 패스포트 세선 초기화
 app.use(passport.initialize());

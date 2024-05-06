@@ -1,7 +1,6 @@
 const SocketIO = require("socket.io");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
-
 var db = require("./models/index");
 
 module.exports = (server) => {
